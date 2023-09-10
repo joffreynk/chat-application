@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  name String
+  profilePicture String
+  bio String
+  tel String
+  userName String
+  email String
+  messagesSent Message[] @relation("sentById")
+  messagesReceived Message[] @relation("sentToId")
+  groups GroupMember[]
+}
+
+enum Role {
+  ADMIN
+  REGULAR
+}
+
+model GroupMember {
+ id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user User @relation(fields: [userId], references: [id])
+  role Role @default(REGULAR)
+  groupId String @db.ObjectId
+  group Group @relation(fields: [groupId], references: [id])
+}
+
+model Group {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  bio String
+  profilePicture String
+  members GroupMember[]
+  messages Message[]
+}
+
+model Message {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  text String
+  images String[]
+  sentById String @db.ObjectId
+  sentToId String? @db.ObjectId
+  sentToGroupId String? @db.ObjectId
+
+  sentBy User @relation("sentById", fields: [sentById], references: [id], onDelete: Cascade)
+  sentTo User? @relation("sentToId", fields: [sentToId], references: [id], onDelete: Cascade)
+  sentToGroup Group? @relation(fields: [sentToGroupId], references: [id], onDelete: Cascade)
+}
