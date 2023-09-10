@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.23.5",
     "@livekit/components-react": "^1.1.8",
     "@livekit/components-styles": "^1.0.6",
     "@nextui-org/react": "^2.1.10",
