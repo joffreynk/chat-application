@@ -1,11 +1,12 @@
-import { findUser } from "@/lib/serverActions";
+import { findUser } from "@/lib/serverActions/serverActions";
 import { UserButton, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
   const logUser = await currentUser();
-  if(!logUser) redirect('/login');
+  if (!logUser) redirect("/login");
   const user = await findUser(logUser?.id);
+    if (!user) redirect("/onboarding");
 
   return (
     <main>

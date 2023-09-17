@@ -54,6 +54,7 @@ model Message {
   sentById String @db.ObjectId
   sentToId String? @db.ObjectId
   sentToGroupId String? @db.ObjectId
+  created_at  DateTime @default(now())
 
   sentBy User @relation("sentById", fields: [sentById], references: [id], onDelete: Cascade)
   sentTo User? @relation("sentToId", fields: [sentToId], references: [id], onDelete: Cascade)
