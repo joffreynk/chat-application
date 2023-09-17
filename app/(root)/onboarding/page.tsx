@@ -24,7 +24,10 @@ const OnBoarding = async() => {
       <h2 className=" text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-100 to-blue-500 py-8">
         Onboarding
       </h2>
-      <BoardingForm boardingData={boarding} />
+      <BoardingForm
+        boardingData={boarding}
+        update={user?.id ? user?.id : ''}
+      />
     </div>
   );
 }

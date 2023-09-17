@@ -1,15 +1,16 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { UploadButton } from "@/lib/uploadthing";
 import { Button, Image, Input, Textarea } from "@nextui-org/react";
 import "@uploadthing/react/styles.css";
+import { redirect } from "next/navigation";
+
 import { valid, validationSchema, UserType } from "@/types";
+import prismadb from "@/lib/prismadb";
 
 
-
-const BoardingForm = ({ boardingData }: { boardingData: UserType }) => {
+const BoardingForm = ({ boardingData, update }: { boardingData: UserType, update: string }) => {
   const {
     register,
     handleSubmit,
@@ -21,7 +22,31 @@ const BoardingForm = ({ boardingData }: { boardingData: UserType }) => {
     resolver: zodResolver(valid),
     defaultValues: boardingData,
   });
-  const submit = (data: validationSchema) => console.log(data);
+  const submit = async (data: validationSchema) =>
+  {
+
+  
+    try {
+      await prismadb.$connect()
+        if (update.length>4) {
+         const user = await prismadb.user.update({
+          where: {
+            id: update
+          },
+          data,
+         });
+
+        } else {
+          const user = await prismadb.user.create({
+            data,
+          });
+        }
+        prismadb.$disconnect();
+        redirect('/')
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(submit)}>
