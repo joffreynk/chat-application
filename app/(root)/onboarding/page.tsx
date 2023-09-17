@@ -1,27 +1,16 @@
-import { Button, Input } from "@nextui-org/react";
+import BoardingForm from "@/components/shared/onboarding";
+
 
 const OnBoarding = () => {
 
   return (
-    <form className="flex flex-col gap-4">
-      <Input
-        isRequired
-        label="Email"
-        placeholder="Enter your email"
-        type="email"
-      />
-      <Input
-        isRequired
-        label="Password"
-        placeholder="Enter your password"
-        type="password"
-      />
-      <div className="flex gap-2 justify-end">
-        <Button  fullWidth color="primary">
-          Login
-        </Button>
-      </div>
-    </form>
+    <div className=" px-5 py-20 m-auto">
+      <h2 className=" text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-100 to-blue-500 py-8
+      ">
+        Onboarding
+      </h2>
+      <BoardingForm />
+    </div>
   );
 }
 

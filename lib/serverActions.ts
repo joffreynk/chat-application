@@ -1,11 +1,10 @@
 'use server';
 
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient()
+import prismadb from "./prismadb";
 
 export const findUser = async (userId: string) => {
-  const user = await prisma.user.findUnique({
+  const user = await prismadb.user.findUnique({
     where: { userId: userId },
   });
 
