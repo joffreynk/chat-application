@@ -1,6 +1,9 @@
-import { findUser } from "@/lib/serverActions/serverActions";
-import { UserButton, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import "react-chat-elements/dist/main.css";
+
+import Chat from "@/components/shared/chat";
+import { findUser } from "@/lib/serverActions/serverActions";
 
 export default async function Home() {
   const logUser = await currentUser();
@@ -10,10 +13,8 @@ export default async function Home() {
 
   return (
     <main>
-      <h1 className="text-pink-700 shadow-2xl ">Hello messanger</h1>
-      <div>
-        <UserButton afterSignOutUrl="/" />
-      </div>
+
+      <Chat />
     </main>
   );
 }
