@@ -4,13 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadButton } from "@/lib/uploadthing";
 import { Button, Image, Input, Textarea } from "@nextui-org/react";
 import "@uploadthing/react/styles.css";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import { valid, validationSchema, UserType } from "@/types";
-import prismadb from "@/lib/prismadb";
 
 
 const BoardingForm = ({ boardingData, update }: { boardingData: UserType, update: string }) => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,29 +22,17 @@ const BoardingForm = ({ boardingData, update }: { boardingData: UserType, update
     resolver: zodResolver(valid),
     defaultValues: boardingData,
   });
-  const submit = async (data: validationSchema) =>
-  {
-
-  
-    try {
-      await prismadb.$connect()
-        if (update.length>4) {
-         const user = await prismadb.user.update({
-          where: {
-            id: update
-          },
-          data,
-         });
-
-        } else {
-          const user = await prismadb.user.create({
-            data,
-          });
-        }
-        prismadb.$disconnect();
-        redirect('/')
+  const submit = async (data: validationSchema) =>{
+   try{
+    const user  = await fetch('api/users', {
+      method: 'POST',
+      body: JSON.stringify({data, id: update}),
+    })
+    if(user.ok){
+      router.push("/")
+    }
     } catch (error: any) {
-      console.log(error);
+      console.log(`PROBLEM WITH: ${error.message}`);
     }
   }
 
