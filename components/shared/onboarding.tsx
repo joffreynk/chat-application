@@ -5,14 +5,12 @@ import { UploadButton } from "@/lib/uploadthing";
 import { Button, Image, Input, Textarea } from "@nextui-org/react";
 import "@uploadthing/react/styles.css";
 
+import { useRouter } from "next/navigation";
+
 import { valid, validationSchema, UserType } from "@/types";
-const BoardingForm = ({
-  boardingData,
-  update,
-}: {
-  boardingData: UserType;
-  update: string;
-}) => {
+
+const BoardingForm = ({ boardingData, update }: { boardingData: UserType, update: string }) => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,

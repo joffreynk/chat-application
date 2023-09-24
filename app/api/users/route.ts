@@ -1,29 +1,24 @@
 import prismadb from "@/lib/prismadb";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
-export const POST = async (req: Request) => {
-    const { data, id } = await req.json();
-    
-  try {
-    if (id && id.length > 4) {
-      await prismadb.user.update({
-        where: {
-          id: id,
-        },
-        data,
-      });
-    } else {
-      await prismadb.user.create({
-        data: {
-          ...data,
-        },
-      });
+export const POST = async(req: Request, res: Response)=>{
+  const { data, id} = await req.json();
+    try {
+      let user = null;
+      if (id.length > 4) {
+        user = await prismadb.user.update({
+          where: {
+            id: id,
+          },
+          data,
+        });
+      } else {
+        user = await prismadb.user.create({
+          data,
+        });
+      }
+      return new NextResponse(`user created successfully`);
+    } catch (error: any) {
+      return new NextResponse(`failed to create user ${error.message}`);
     }
-    redirect("/");
-} catch (error: any) {
-    console.log(error.message);
-    return NextResponse.json(`USER ACCOUNT CREATION ERROR ${ error.message }`);
-  }
-
-};
+}
