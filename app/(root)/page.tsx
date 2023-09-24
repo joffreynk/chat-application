@@ -6,7 +6,7 @@ export default async function Home() {
   const logUser = await currentUser();
   if (!logUser) redirect("/login");
   const user = await findUser(logUser?.id);
-    if (!user) redirect("/onboarding");
+  if (!user) redirect("/onboarding");
 
   return (
     <main>
